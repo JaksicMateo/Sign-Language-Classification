@@ -1,0 +1,171 @@
+\documentclass[a4paper,twocolumn]{article}
+
+\RequirePackage[croatian]{babel}
+\makeatletter
+\renewcommand\thesection{\@arabic\c@section.}
+\renewcommand\thesubsection{\thesection\@arabic\c@subsection.}
+\renewcommand\thesubsubsection{\thesubsection\@arabic\c@subsubsection.}
+\renewcommand\theequation{\@arabic\c@equation}
+\renewcommand\thefigure{\@arabic\c@figure.}
+\renewcommand\thetable{\@arabic\c@table.}
+\makeatother
+
+\RequirePackage{graphicx}
+\RequirePackage{hyperref}
+\RequirePackage{amssymb}
+\RequirePackage{amsmath}
+\RequirePackage{booktabs}
+
+\title{Raspoznavanje znakova znakovnog jezika primjenom dubokih neuronskih mreža}
+\author{Lucija Čorak, Mateo Jakšić, Petar Kuruc, Martina Šola, Klara Zagajski}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section*{Sažetak}
+
+U ovom radu istražuju se metode klasifikacije znakova znakovnog jezika korištenjem dubokih neuronskih mreža. Razmatrani su vlastiti CNN model te tri unaprijed istrenirana modela: MobileNetV2, EfficientNetB0 i ResNet50. Usporedba se provodi na temelju metrika: točnost, preciznost, odziv, F1-mjera, broj parametara i vrijeme treniranja.
+
+\section{Uvod}
+
+Znakovni jezik predstavlja osnovno sredstvo komunikacije za gluhe i nagluhe osobe. Automatizirano prepoznavanje znakova znakovnog jezika omogućuje razvoj inkluzivnih tehnologija i alata za lakšu komunikaciju. U ovom radu uspoređuju se četiri duboka modela trenirana na istom skupu podataka, s ciljem analize učinkovitosti pojedinih arhitektura.
+
+\section{Korišteni skup podataka}
+
+Korišten je javno dostupan skup podataka znakova američkog znakovnog jezika (ASL), koji se sastoji od slika koje prikazuju ruke u različitim pozicijama koje odgovaraju slovima engleske abecede. Skup je podijeljen na trening, validacijski i testni dio.
+
+Skup podataka dostupan je na platformi Kaggle: 
+\href{https://www.kaggle.com/datasets/datamunge/sign-language-mnist}{Sign Language MNIST} \cite{asl_dataset}.
+
+Radi se o slikama dimenzije $28 \times 28$ piksela u sivim tonovima, a svaka slika prikazuje jednu gestu koja odgovara slovu engleske abecede (osim slova \textit{J} i \textit{Z}, koja uključuju pokret i nisu zastupljena u ovom skupu).
+
+Podaci su raspodijeljeni na sljedeći način:
+\begin{itemize}
+    \item Trening skup: X uzoraka
+    \item Validacijski skup: Y uzoraka
+    \item Testni skup: Z uzoraka
+\end{itemize}
+
+
+\section{Obrada slike}
+
+Prije treniranja modela provedena je obrada ulaznih slika kako bi se poboljšala kvaliteta podataka i omogućila robusnost modela.
+
+\subsection{Promjena dimenzija i skaliranje}
+
+Sve slike su skalirane na istu dimenziju $X \times X$ piksela kako bi se zadovoljili ulazni zahtjevi mreža. Pikselske vrijednosti su normalizirane na raspon $[0,1]$.
+
+\subsection{Augmentacija podataka}
+
+Kako bi se smanjilo pretreniranost i povećala generalizacija modela, korištena je augmentacija slika. Primijenjene su sljedeće transformacije:
+\begin{itemize}
+    \item Horizontalna i vertikalna translacija
+    \item Rotacija (do $X^\circ$)
+    \item Zrcaljenje (horizontalno)
+    \item Zoomiranje (unutar raspona $[Y_1, Y_2]$)
+\end{itemize}
+
+\subsection{Podjela skupa}
+
+Skup podataka podijeljen je na tri dijela:
+\begin{itemize}
+    \item Trening skup: X\% uzoraka
+    \item Validacijski skup: Y\% uzoraka
+    \item Testni skup: Z\% uzoraka
+\end{itemize}
+
+\subsection{Standardizacija prema modelu}
+
+Za pretrenirane modele (MobileNetV2, EfficientNetB0, ResNet50) korištene su odgovarajuće metode predobrade iz biblioteke \texttt{tensorflow.keras.applications}, koje uključuju:
+\begin{itemize}
+    \item Središnjenje pikselskih vrijednosti
+    \item Skaliranje prema statistici skupa na kojem je model treniran
+\end{itemize}
+
+
+\section{Modeli}
+
+\subsection{Model 1: CNN}
+
+
+\subsection{Model 2: MobileNetV2}
+
+
+
+\subsection{Model 3: EfficientNetB0}
+
+
+
+\subsection{Model 4: ResNet}
+
+
+\newpage
+\section{Usporedba modela}
+
+\subsection{Korištene metrike}
+
+Za kvantitativnu usporedbu korištene su sljedeće metrike:
+\begin{itemize}
+    \item \textbf{Točnost (Accuracy)} – ukupni broj točnih klasifikacija u odnosu na ukupan broj uzoraka.
+    \item \textbf{Preciznost (Precision)} – omjer ispravno predviđenih pozitivnih uzoraka u odnosu na sve predviđene pozitivne uzorke.
+    \item \textbf{Odziv (Recall)} – omjer ispravno predviđenih pozitivnih uzoraka u odnosu na sve stvarne pozitivne uzorke.
+    \item \textbf{F1-mjera (F1 Score)} – harmonijska sredina preciznosti i odziva.
+\end{itemize}
+
+\subsection{Tablična usporedba rezultata}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+Metrička mjera & CNN & ResNet & M3 & M4 \\
+\midrule
+Točnost (\%) & X1 & X2 & X3 & X4 \\
+Preciznost (\%) & Y1 & Y2 & Y3 & Y4 \\
+Odziv (\%) & Z1 & Z2 & Z3 & Z4 \\
+F1-mjera (\%) & W1 & W2 & W3 & W4 \\
+Vrijeme treniranja & T1 & T2 & T3 & T4 \\
+Broj parametara & P1 & P2 & P3 & P4 \\
+\bottomrule
+\end{tabular}
+\caption{Usporedba performansi modela prema različitim metrima}
+\label{tab:rezultati_transponirano}
+\end{table}
+
+
+
+\subsection{Diskusija}
+
+Nakon provođenja eksperimenta, može se primijetiti da pojedini modeli ostvaruju bolje rezultate ovisno o metrikama i resursima. Vrijeme treniranja i broj parametara značajno utječu na mogućnosti primjene u stvarnim okruženjima.
+
+\section{Zaključak}
+
+.
+
+\begin{thebibliography}{25}
+
+\bibitem{tensorflow}
+TensorFlow documentation, \url{https://www.tensorflow.org/}
+
+\bibitem{keras}
+Keras API reference, \url{https://keras.io/api/}
+
+\bibitem{mobilenet}
+Sandler, M., et al. (2018). MobileNetV2: Inverted Residuals and Linear Bottlenecks. \textit{CVPR}.
+
+\bibitem{efficientnet}
+Tan, M., \& Le, Q. (2019). EfficientNet: Rethinking Model Scaling for Convolutional Neural Networks. \textit{ICML}.
+
+\bibitem{resnet}
+He, K., Zhang, X., Ren, S., \& Sun, J. (2016). Deep Residual Learning for Image Recognition. \textit{CVPR}.
+
+\bibitem{asl_dataset}
+DataMunge. 
+Sign Language MNIST,
+\url{https://www.kaggle.com/datasets/datamunge/sign-language-mnist}
+
+\end{thebibliography}
+
+\end{document}
